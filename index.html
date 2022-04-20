@@ -5,33 +5,91 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Кликер</title>
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <title>Практика по документации</title>
 </head>
 <body>
-<!-- 
-   This is the code from Part 1 of my video tutorials on learning Knockout JS:
-   https://www.youtube.com/watch?v=XhfPaNTEuTs
--->
-<div id="knockout-app" class="card">
-    <header>
-       Good Dog Walks Inc.
-    </header>
-    <div class="card-section">
-       <h2>Привет, <span data-bind="text: userName"></span></h2>
-       <p>Сколько часов будем гулять сегодня?</p>
-       <div class="counter-ui-container">
-          <button data-bind="click: decrease">-</button>
-          <span class="counter" data-bind="text: count">0</span>
-          <button data-bind="click: increase">+</button>
-       </div>
-       <p>
-          Твоя собака <span data-bind="text: dogStatus"></span>
-       </p>
-    </div>
-    <footer>
-       <span>Хвостатая прогулка!</span>
-    </footer>
- </div>
 
+<script>
+   /*Создание моделей*/
+   var myViewModel = {
+    personName: ko.observable('Bob'),
+    personAge: ko.observable(123)
+   };
+   ko.applyBindings(myViewModel);
+   myViewModel.personName('Mary').personAge(50);
+   
+   myViewModel.personName.subscribe(function(newValue) {
+        console.log("The person's new name is " + newValue);
+   });
+
+   
+   /*Массивы*/
+   var myObservableArray = ko.observableArray();    // инициализация массива
+   myObservableArray.push('Некоторое значение');  //добавить значение
+   myObservableArray.push('PuriVan'); 
+   myObservableArray.push('PuriVanV'); 
+   myObservableArray.push('K'); 
+   myObservableArray.push('B');
+   myObservableArray.push('E');
+   myObservableArray.push('Q'); 
+   myObservableArray.push('A'); 
+   myObservableArray.push('C');   
+   //заполнение массива
+   var anotherObservableArray = ko.observableArray([  
+    { name: "Bungle", type: "Bear" },
+    { name: "George", type: "Hippo" },
+    { name: "Zippy", type: "Unknown" }  
+   ]);  
+
+   /*Операции над массивами*/
+   console.log('Длина массива ' + myObservableArray().length);  
+   console.log('Первый элемент ' + myObservableArray()[0]);  
+   console.log('Длина второго массива ' + anotherObservableArray().length); 
+   console.log('Имя третьего элемента второго массива ' + anotherObservableArray()[2].name); 
+   //индекс
+   console.log('индекс PuriVanV: ' + myObservableArray.indexOf('PuriVanV'));
+   console.log('несуществующий индекс: ' + myObservableArray.indexOf('PurddiVanV'));
+   //slice
+   console.log(myObservableArray.slice(0,myObservableArray().length)); 
+   //манипуляции с массивом
+   //push - добавить в конец
+   myObservableArray.push('Pushin');
+   console.log('После push '+myObservableArray());
+   //pop - удалить с конца
+   myObservableArray.pop();
+   console.log('После pop '+myObservableArray());
+   //unshift - добавить в начало
+   myObservableArray.unshift('Kitty');
+   console.log('После unshift '+myObservableArray());
+   //shift - удалить с начала
+   myObservableArray.shift();
+   console.log('После shift '+myObservableArray());
+   //reverse - порядок на обратный
+   myObservableArray.reverse();
+   console.log('После reverse '+myObservableArray());
+   //sort - сортировка по алфавиту
+   myObservableArray.sort();
+   console.log('После sort '+myObservableArray());
+   //splice - удаляет и возвращает заданное количество по указанным индексам
+   var splc = ko.observableArray()
+   splc.push(myObservableArray.splice(1,5));
+   console.log('После splice '+myObservableArray());
+   console.log('В splice '+splc());
+   //sorted - создает копию массива
+   //reversed - обратная копия массива
+   
+   /*Доп операции над массивами*/
+   //заменить
+   console.log('До replace '+  myObservableArray());
+   myObservableArray.replace(myObservableArray()[0],"rplcMIMI");
+   console.log('После replace '+  myObservableArray());
+   //удалить все
+   console.log('После removeAll '+  myObservableArray.removeAll(['rplcMIMI','Q']));
+   console.log('Массив после removeAll'+  myObservableArray());
+
+</script>
+<div>
+</div>
 </body>
 </html>
