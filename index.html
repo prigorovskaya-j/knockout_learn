@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
     <title>Кликер</title>
 </head>
 <body>
@@ -12,26 +13,65 @@
    This is the code from Part 1 of my video tutorials on learning Knockout JS:
    https://www.youtube.com/watch?v=XhfPaNTEuTs
 -->
+
 <div id="knockout-app" class="card">
-    <header>
-       Good Dog Walks Inc.
-    </header>
+
+    <header> Счастье для вашей собаки</header>
+
     <div class="card-section">
        <h2>Привет, <span data-bind="text: userName"></span></h2>
        <p>Сколько часов будем гулять сегодня?</p>
        <div class="counter-ui-container">
           <button data-bind="click: decrease">-</button>
-          <span class="counter" data-bind="text: count">0</span>
+          <span class="counter" data-bind="text: count"></span>
           <button data-bind="click: increase">+</button>
        </div>
        <p>
           Твоя собака <span data-bind="text: dogStatus"></span>
        </p>
     </div>
+
     <footer>
        <span>Хвостатая прогулка!</span>
     </footer>
- </div>
 
+   <script>
+      function CounterViewModel() {
+      var self = this;
+      self.userName = ko.observable("Wayne");
+      self.count = ko.observable(0);
+      
+      self.increase = function() {
+         var currentValue = self.count();
+         self.count(currentValue + 1);
+      }
+      
+      self.decrease = function() {
+         var currentValue = self.count();
+         if (currentValue > 0) {
+            self.count(currentValue - 1);
+         }
+      }
+      
+      self.dogStatus = ko.computed(function() {
+         if (self.count() === 1) {
+            return "грустит. Ей мало!"
+         }
+         if (self.count() === 2) {
+            return "настроена на лучшее, но можно и лучше"
+         }
+         if ((self.count() > 2) && (self.count()<8)) {
+            return "в восторге!"
+         }
+         if(self.count()>=8){
+            return "валится с лап";
+         }
+         return "съест тебя ночью."
+      });
+      };
+   const knockoutApp = document.querySelector("#knockout-app");
+   ko.applyBindings(new CounterViewModel(), knockoutApp);
+   </script>
+</div>
 </body>
 </html>
