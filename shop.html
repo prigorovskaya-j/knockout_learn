@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <title>Товары для хвоста</title>
+</head>
+<body>
+    <!-- 
+   This is the code from Part 2 of my video tutorials on learning Knockout JS:
+   https://www.youtube.com/watch?v=dir9iHcUkZI
+-->
+
+<div id="knockout-app" class="card">
+    <div class="menu">
+        <ul>
+           <li><a href="index.html">Главная</a></li>
+           <li><a href="shop.html">Магазин для хвоста</a></li>
+           <li>Что-то еще</li>
+        </ul>
+     </div>
+     <header> Счастье для вашего хвоста</header>
+     <div class="card-section">
+        <h2>МяуГавМагазин</h2>
+        <p data-bind="visible: inventory().length === 0">Хвостик будет огорчен!</p>
+        <p data-bind="visible: inventory().length > 0">Хвостик счастлив!</p>
+        
+        <button data-bind="click: addItem, enable: inventory().length < 5">+</button>
+        <ul class="counter-ui-container" data-bind="foreach: inventory">
+           <li>
+              <span>
+                 <span data-bind="class: $data.icon"></span>
+                 <span class="li_label" data-bind="text: $data.text"></span>
+              </span>
+              <button class="button_small" data-bind="click: $parent.removeItem, attr: {'item-index': $index}">
+                 &times;
+              </button>
+           </li>
+        </ul>
+     </div>
+     <footer>
+        <span>Лови хвостато-счастливый день</span>
+     </footer>
+    <script>
+        function InventoryViewModel(){
+            var self = this;
+            
+            var iconTypes = [
+                { icon: "icon-bone", text: "Кость" },
+                { icon: "icon-ball", text: "Мяч" },
+                { icon: "icon-circle", text: "Кольцо" },
+                { icon: "icon-rabbit", text: "Кроль" }
+            ]
+            self.inventory = ko.observableArray([
+                iconTypes[1]
+            ]);
+            
+            self.addItem = function() {
+                var index = Math.floor(Math.random() * iconTypes.length);
+                self.inventory.push(iconTypes[index]); 
+            }
+            
+            self.removeItem = function(data, event) {      
+                var indexToRemove = event.target.getAttribute("item-index")
+                self.inventory.splice(indexToRemove, 1);
+            }
+        }
+        const knockoutApp = document.querySelector("#knockout-app");
+        ko.applyBindings(new InventoryViewModel(), knockoutApp);
+    </script>
+ </div>
+</body>
+</html>

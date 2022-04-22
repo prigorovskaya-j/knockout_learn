@@ -23,11 +23,12 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
     border-radius: var(--border-radius);
-    max-width: 400px;
+    max-width: 500px;
     margin: 0 auto;
  }
  .card header {
     padding: 1em;
+    text-align: center;
  }
  
  .card-section {
@@ -79,3 +80,71 @@
  footer span {
     font-size: 0.8em;
  }
+ .menu li{
+   margin: 3%;
+   display: inline-block;
+   vertical-align: top;
+ }
+ a{
+    text-decoration: none;
+    color: var(--paragraph-color);
+
+ }
+ a:hover{
+    cursor: default;
+    text-decoration: none;
+ }
+ button[disabled] {
+   border: 1px solid #ddd;
+   cursor: inherit;
+}
+
+.button_small {
+   font-size: 0.8em;
+   text-align:center;
+   padding:0;
+   width: 32px;
+   height: 32px;
+}
+.counter-ui-container {
+   margin:0;
+   padding:0;
+}
+.counter-ui-container li {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding:0.5em 0;
+   margin:0;
+}
+.li_label {
+   font-size: 1.3em;
+}
+
+
+footer {
+   color: #999;
+   text-align:center;
+   padding: 1em 1em 1em;
+}
+footer span {
+   font-size: 0.8em;
+}
+
+.icon-bone,
+.icon-ball,
+.icon-circle,
+.icon-rabbit {
+   width: 64px;
+   height: 64px;
+   image-rendering: pixelated;
+   display:inline-block;
+   background: url("https://assets.codepen.io/21542/Toys.png") no-repeat no-repeat;
+   background-size: 256px;
+   vertical-align: middle;
+   position: relative;
+   top: -8px;
+}
+.icon-ball { background-position: -64px;}
+.icon-circle { background-position: -128px;}
+.icon-rabbit { background-position: -192px;}
