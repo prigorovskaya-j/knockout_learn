@@ -23,7 +23,7 @@
     background: #FFFFFF;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
     border-radius: var(--border-radius);
-    max-width: 500px;
+    max-width: 650px;
     margin: 0 auto;
  }
  .card header {
@@ -45,6 +45,22 @@
     font-weight:normal;
     color: var(--paragraph-color);
  }
+
+ 
+.card {
+   background: #FFFFFF;
+   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12);
+   border-radius: var(--border-radius);
+   max-width: 500px;
+   margin: 0 auto;
+}
+.card header {
+   padding: 1em;
+}
+
+.card-section-2 {
+   padding: 2em 4em;
+}
  
  .counter-ui-container {
     display: flex;
@@ -148,3 +164,72 @@ footer span {
 .icon-ball { background-position: -64px;}
 .icon-circle { background-position: -128px;}
 .icon-rabbit { background-position: -192px;}
+
+
+input[type="submit"] {
+   margin-top: 1em;
+   appearance: none;
+   height: 40px;
+   padding-left: 4em;
+   padding-right: 4em;
+   border-radius: var(--border-radius);
+   cursor: pointer;
+   background: #64CDDB;
+   font-family: inherit;
+   outline: 0;
+   border:0;
+   color: #fff;
+   font-weight:bold;
+   border-bottom: 4px solid #38BED3;
+}
+input[type="submit"]:focus {
+   outline: #39A7B8 auto 1px;
+}
+input[type="submit"][disabled] {
+   border: 1px solid #ddd;
+   cursor: inherit;
+}
+
+
+label {
+   display: block;
+   font-size: 0.8em;
+   color: var(--paragraph-color);
+   margin-bottom: 0.3em;
+}
+input[type="text"] {
+   display: block;
+   height: 40px;
+   width: 100%;
+   max-width: 300px;
+   border-radius: var(--border-radius);
+   border: 1px solid #888;
+   padding-left: 0.5em;
+   font-family: inherit;
+}
+
+.field {
+   margin-bottom: 1em;
+}
+select {
+   height: 40px;
+   padding-left: 0.5em;
+   padding-right: 2em;
+   width: 150px;
+   border-radius: var(--border-radius);
+   border: 1px solid #888;
+   font-family: inherit;
+   appearance: none;
+}
+.select-container {
+   position: relative;
+   display:inline-block;
+}
+.select_arrow {
+   position: absolute;
+   right:0.3em;
+   top:0.3em;
+}
+::placeholder {
+   color: #bbb;
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>    
+    <script type='text/javascript' src='knockout-validation.js'></script>
+    <title>Валидация</title>
+</head>
+<body>
+    <!-- 
+   This is the code from Part 2 of my video tutorials on learning Knockout JS:
+   https://www.youtube.com/watch?v=dir9iHcUkZI
+-->
+
+<div id="knockout-app" class="card">
+    
+    <header>
+       Счастье для вашего хвоста
+    </header>
+    
+    <div class="menu">
+        <ul>
+           <li><a href="#">Главная</a></li>
+           <li><a href="shop.html">Магазин для хвоста</a></li>
+           <li><a href="validation.html">Валидация</a></li>
+           <li>Компоненты</li>
+        </ul>
+     </div>
+
+    <div class="card-section-2" style="display: none;" data-bind="visible: hasBeenSubmitted">
+       <h2>Спасибо за отправку формы!</h2>
+       <p>Проверьте свою почту</p>
+    </div>
+    
+    <div class="card-section-2" data-bind="visible: !hasBeenSubmitted()">
+       <h2>Создать аккаунт</h2>
+       <p>Заполните формы</p>
+       <form data-bind="submit: handleSubmit">
+          <div class="field">
+             <label for="first-name">Имя*</label>
+             <input type="text" id="first-name" data-bind="value: firstName, css: {
+                 error: firstName.error() && firstName.isModified()
+             }">
+          </div>
+          <div class="field">
+             <label for="email">Email*</label>
+             <input data-bind="value: emailAddress, css: { 
+                 error: emailAddress.error() && emailAddress.isModified() 
+                }" placeholder="you@mail.com" id="email" type="text" />
+          </div>
+          <div class="field">
+             <label for="subscription">Подписка*</label>
+             <div class="select-container">
+                <select id="subscription" data-bind="value: subscriptionType">
+                   <option value="standard">Стандартная</option>
+                   <option value="pro">Расширенная</option>
+                   <option value="superPro">Мульти-подписка</option>
+                </select>
+                <svg class="select_arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" viewBox="0 0 768 768">
+                   <path fill="#222" d="M223.5 319.5h321l-160.5 160.5z"></path>
+                </svg>
+             </div>
+          </div>
+          <input type="submit" value="Отправить">
+       </form>
+    </div>
+
+    <footer>
+       <span>Лови хвостато-счастливый день</span>
+    </footer>
+
+     <script>
+        function CreateAccountViewModel() {
+        var self = this;
+        
+        self.firstName = ko.observable("").extend({
+            required: true,
+            minLength: 5,
+        });
+        self.emailAddress = ko.observable("").extend({
+            required: true,
+            email: true
+        });
+        self.subscriptionType = ko.observable("standard");
+        self.hasBeenSubmitted = ko.observable(false);
+        
+        window.firstName = self.firstName;
+        
+        self.handleSubmit = function() {
+            
+            //Check for errors      
+            var errors = ko.validation.group(self);
+            if (errors().length > 0) {
+                errors.showAllMessages();
+                return;
+            }
+
+            self.hasBeenSubmitted(true);
+            
+            console.log('форма отправлена!')
+            console.log({
+                firstName: self.firstName(),
+                emailAddress: self.emailAddress(),
+                subscriptionType: self.subscriptionType(),
+            })
+        }
+        };
+
+        const knockoutApp = document.querySelector("#knockout-app");
+        ko.applyBindings(new CreateAccountViewModel(), knockoutApp);
+     </script>
+</div>
+</body>
+</html>
