@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>    
+    <script type='text/javascript' src='knockout-validation.js'></script>
+    <title>Компоненты</title>
+</head>
+<body>
+    <!-- 
+   This is the code from Part 2 of my video tutorials on learning Knockout JS:
+   https://www.youtube.com/watch?v=dir9iHcUkZI
+-->
+
+<div id="knockout-app" class="card">
+    
+    <header>
+       Счастье для вашего хвоста
+    </header>
+    
+    <div class="menu">
+        <ul>
+           <li><a href="#">Главная</a></li>
+           <li><a href="shop.html">Магазин для хвоста</a></li>
+           <li><a href="validation.html">Валидация</a></li>
+           <li><a href="component.html">Компоненты</a></li>
+        </ul>
+    </div>
+        <h2>Элементы</h2>
+        <ul data-bind="foreach: items">
+           <li data-bind="text: $data"></li>
+        </ul>   
+       
+        <loading-button params="buttonText: 'Получить все', 'action': fetchItems, 'onDone':onNewItems "></loading-button>  
+    
+        <footer>
+        <span>Лови хвостато-счастливый день</span>
+    </footer>
+
+    <script>
+         function ItemsListViewModel() {
+            var self = this;
+
+            self.items = ko.observableArray([
+            ]);
+            
+            self.fetchItems = function(callback) {
+                console.log("fetch items!")
+                setTimeout(function() {
+                    var MOCK_RESPONSE = {
+                        items: [
+                        "Я", "Нашел", "Несколько", "Элементов",
+                        ]
+                    }
+                    callback(MOCK_RESPONSE.items)
+                }, 2000)   
+            }
+            
+            self.onNewItems = function(newItems) {
+                self.items(newItems)
+            }
+        }
+
+        ko.components.register("loading-button", {
+            template: [ 
+                '<button data-bind="click: onClick, css: {loading: isLoading }" class="LoadingButton">',
+                    '<span data-bind="text: buttonText"></span>',
+                '</button>'
+            ].join(''),
+            viewModel: function(params) {
+                var self = this;
+                self.buttonText = ko.observable(params.buttonText);
+                self.isLoading = ko.observable(false);
+                
+                self.onClick = function() {
+                    self.isLoading(true)
+                    params.action(function(data) {
+                        self.isLoading(false)
+                        params.onDone(data)
+                    });
+                }
+            }
+        })
+
+        const knockoutApp = document.querySelector("#knockout-app");
+        ko.applyBindings(new ItemsListViewModel(), knockoutApp);
+</script>
+</div>
+</body>
+</html>
