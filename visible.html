@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div data-bind="visible: shouldShowMessage">
+       Сообщение появилось, потому что shouldShowMessage приняло 1. //visible с 1 на 0
+    </div>
+     <div data-bind="hidden: showLoveWinchester">
+         Люблю сверхъестественное, а ты?//hidden с 1 на 0
+     </div>
+     <div data-bind="visible: myValues().length > 1">
+        Функция подсчета для видимости
+    </div>
+    <div>
+        Вывести сообщение с подстановкой: <span data-bind="text: showText"></span>
+        <br>
+        Цена в <span data-bind="text: price"></span> - это <span data-bind="text: priceRating"></span>
+        <br>
+        The item is <span data-bind="text: prices() > 50 ? 'expensive' : 'affordable'"></span> today.
+        <br>
+        <span data-bind="text: details"></span>
+        <br>
+        <span data-bind="html: details"></span>
+    </div>
+    <div data-bind="css: { profitWarning: currentProfit() < 0 }">
+        Profit Information 
+     </div>
+     <div data-bind="css: { profitPositive: currentProfitTwo() > 0}">
+         klkl
+     </div>
+     <a data-bind="attr: { href: url, title: details }">
+        Attr-Report
+    </a>
+     
+    <script>
+        //visible, hidden
+        var viewModel = {
+            shouldShowMessage: ko.observable(true),
+            showLoveWinchester: ko.observable(true),
+            myValues: ko.observableArray([]),
+            showText: ko.observable(),
+            price: ko.observable(24.9),
+            prices: ko.observable(24.9),
+            details: ko.observable(),
+            currentProfit: ko.observable(5105),
+            currentProfitTwo: ko.observable(5105),
+            //attr
+            url: ko.observable("index.html"),
+            details: ko.observable("Report index.html")
+        };
+        viewModel.shouldShowMessage(false); // не выводит
+        viewModel.showLoveWinchester(false);
+        /*visible привязка устанавливается yourElement.style.display на none, 
+        что приводит к его скрытию. Имеет приоритет над любым стилем из CSS.
+        hidden при true скрывает элемент, устанавливая display стиль в none*/
+        viewModel.myValues.push("charmed");
+        viewModel.myValues.push("revange");
+        viewModel.showText("Hello,world");
+        viewModel.details("<em>Больше деталей <a href='index.html'>здесь</a>.</em>"); 
+    
+        //использование функций для определения
+        viewModel.priceRating = ko.pureComputed(function(){
+            return this.price() > 50 ? "дорого" : "доступно";
+        },viewModel)
+        
+        //css class
+        viewModel.profitStatus = ko.pureComputed(function() {
+            return this.currentProfit() < 0 ? "profitWarning" : "profitPositive";
+        }, viewModel);
+        viewModel.currentProfit(-50);
+
+
+        ko.applyBindings(viewModel);
+       
+    </script>
+    
+
+
+
+</body>
+</html>
