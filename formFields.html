@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <title>Работа с полями формы</title>
+</head>
+<body>
+   <!--
+    <div>
+        Вы нажали на кнопку <span data-bind="text: numberOfClicks"></span> раз
+        <button data-bind="click: incrementClickCounter">Жми</button>
+    </div>
+-->
+ <!--
+    <div>
+        <ul data-bind="foreach: places">
+            <li>
+                <span data-bind="text: $data"></span>
+                <button data-bind="click: $parent.removePlace">Удалить</button>
+            </li>
+        </ul>
+    </div>
+-->
+
+<button data-bind="click: myFunction">
+    Нажми меня
+</button>
+
+<button data-bind="click: function(data, event) { myFunction('param1', 'param2', data, event) }">
+    Click me
+</button>
+
+<button data-bind="click: myFunction.bind($data, 'param1', 'param2')">
+    Click me
+</button>
+
+<div data-bind="click: myDivHandler">
+    <button data-bind="click: myButtonHandler, clickBubble: false">
+        Click me
+    </button>
+</div>
+
+<div>
+    <div data-bind="event: { mouseover: enableDetails, mouseout: disableDetails }">
+        Наведи курсор на меня
+    </div>
+    <div data-bind="visible: detailsEnabled">
+        Детали
+    </div>
+</div>
+ 
+<div data-bind="event: { mouseover: myDivHandler }">
+    <button data-bind="event: { mouseover: myButtonHandler }, mouseoverBubble: true">
+        Click me НЕТ
+    </button>
+</div>
+
+<form data-bind="submit: doSomething">
+    Имя: <input type="text" name="name"/><br>
+    <button type="submit">Отправить</button>
+</form>
+<p>
+    <input type='checkbox' data-bind="checked: hasCellphone" />
+    У меня есть телефон
+</p>
+<p>
+    Номер:
+    <input type='text' data-bind="value: cellphoneNumber, enable: hasCellphone" />
+</p>
+
+<p>
+    Выберите страну:
+    <select data-bind="options: countries,
+                       optionsCaption: 'Выберите одну',
+                       value: selectedCountry,
+                       valueAllowUnset: false">
+    </select>
+</p>
+
+<p>Первое значение: <input data-bind="value: firstValue" /></p>
+ 
+<p>Второе: <input data-bind="value: secondValue" /></p>
+ 
+<p>Третье: <input data-bind="value: secondValue.length > 8" /></p>
+
+<p>Логин: <input data-bind="value: userName" /></p>
+<p>Пароль: <input type="password" data-bind="value: userPassword" /></p>
+<p>Login name: <input data-bind="textInput: userName" /></p>
+<p>Password: <input type="password" data-bind="textInput: userPassword" /></p>
+ViewModel:
+<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+
+<input data-bind="hasFocus: isSelected" />
+<button data-bind="click: setIsSelected">Сфокусироваться</button>
+<span data-bind="visible: isSelected">Фокус-текст</span>
+
+<p>
+    Имя: 
+    <b data-bind="visible: !editing(), text: names, click: edit">&nbsp;</b>
+    <input data-bind="visible: editing, value: names, hasFocus: editing" />
+</p>
+<p><em>Нажмите на имя для редактирования</em></p>
+
+<p>Отправить в спам: <input type="checkbox" data-bind="checked: wantsSpam" /></p>
+<div data-bind="visible: wantsSpam">
+    Вкусы спама:
+    <div><input type="checkbox" value="cherry" data-bind="checked: spamFlavors" /> Вишня</div>
+    <div><input type="checkbox" value="almond" data-bind="checked: spamFlavors" /> Миндаль</div>
+    <div><input type="checkbox" value="msg" data-bind="checked: spamFlavors" /> Химия</div>
+    <div data-bind="visible: wantsSpam">
+        Preferred flavor of spam:
+        <div><input type="radio" name="flavorGroup" value="cherry" data-bind="checked: spamFlavor" /> Cherry</div>
+        <div><input type="radio" name="flavorGroup" value="almond" data-bind="checked: spamFlavor" /> Almond</div>
+        <div><input type="radio" name="flavorGroup" value="msg" data-bind="checked: spamFlavor" /> Monosodium Glutamate</div>
+    </div>
+</div>
+
+<!-- ko foreach: items -->
+<input type="checkbox" data-bind="checkedValue: $data, checked: $root.chosenItems" />
+<span data-bind="text: itemName"></span>
+<!-- /ko -->
+
+<p>
+    Страна:
+    <select data-bind="options: availableCountries"></select>
+</p>
+
+<p>
+    Выберите несколько стран:
+    <select data-bind="options: availableCountries" size="5" multiple="true"></select>
+</p>
+<p>
+    Ваша страна:
+    <select data-bind="options: availableCountries,
+                       optionsText: 'countryName',
+                       value: selectedCountry,
+                       optionsCaption: 'Выберите'"></select>
+</p>
+ 
+<div data-bind="visible: selectedCountry"> <!-- Appears when you select something -->
+    You have chosen a country with population
+    <span data-bind="text: selectedCountry() ? selectedCountry().countryPopulation : 'unknown'"></span>.
+</div>
+
+<select data-bind="options: availableCountries,
+                optionsText: function(item) {
+                    return item.countryName + ' (pop: ' + item.countryPopulation + ')'
+                },
+                value: selectedCountry,
+                optionsCaption: 'Выберите'">
+</select>
+ <br>
+<select size=3 data-bind="options: myItems,
+                        optionsText: 'name',
+                        optionsValue: 'id',
+                        optionsAfterRender: setOptionDisable">
+</select>
+
+Уник<input data-bind="value: someModelProperty, uniqueName: true" />
+
+
+<script>
+  /*  
+    //Привязка click
+    var viewModel = {
+        numberOfClicks : ko.observable(0),
+        incrementClickCounter : function() {
+            var self = this;
+            var previousCount = self.numberOfClicks();
+            self.numberOfClicks(++previousCount);
+        },
+    };
+    ko.applyBindings(viewModel);*/
+    //Передача «текущего элемента» в качестве параметра функции-обработчику
+    /*function MyViewModel() {
+         var self = this;
+         self.places = ko.observableArray(['Токио', 'Рио', 'Денвер']);
+         self.removePlace = function(place) {
+             self.places.remove(place)
+         }
+     }     
+     ko.applyBindings(new MyViewModel());
+     */
+     // Доступ к объекту события или передача дополнительных параметров
+     var Country = function(name, population) {
+        this.countryName = name;
+        this.countryPopulation = population;
+    };
+     var viewModel = {
+        myFunction: function(data, event) {
+            if (event.shiftKey) { //зажать shift 
+                console.log('shift нажат')
+            } else {
+                console.log('shift не нажат')
+            }
+        },        
+        //привязка события
+        detailsEnabled: ko.observable(false),
+        enableDetails: function() {
+            this.detailsEnabled(true);
+        },
+        disableDetails: function() {
+            this.detailsEnabled(false);
+        },
+        //Предотвращение всплытия события
+        myDivHandler: function(){  
+            console.log("Внешнее событие");
+        },
+        myButtonHandler: function(){
+            console.log("При mouseoverBubble true сначала это, потом внешнее. При false только это");
+        },
+        //привязка submit
+        doSomething: function(formElement) {
+            console.log("Отправка");
+            //return true;  //чтобы форма отправлялась как обычно
+        },
+        // "enable" и "disable" привязки для  input, select и textarea.
+        hasCellphone : ko.observable(false),
+        cellphoneNumber: "",
+        //привязка value
+        userName: ko.observable(""),
+        userPassword: ko.observable("abc"), 
+        //Использование valueAllowUnset с <select> элементами
+        countries: ['Япония', 'Боливия', 'Новая Зеландия'],
+        selectedCountry: ko.observable('Латвия'),
+        //Обновление наблюдаемых и ненаблюдаемых значений свойств
+        firstValue: ko.observable("привет"), // Observable
+        secondValue: "привет, опять",
+        //привязка hasFocus
+        isSelected: ko.observable(false),
+        setIsSelected: function() { this.isSelected(true) },
+        //редактор по клику
+        editing: function PersonViewModel(name) {
+            // Data
+            this.name = ko.observable(name);
+            this.editing = ko.observable(false);
+                
+            // Behaviors
+            this.edit = function() { this.editing(true) }
+        },
+        names: ko.observable("Эмми"),
+        //checked привязка
+        wantsSpam: ko.observable(true),
+        //добавление флажков, привязанных к массиву
+        wantsSpam: ko.observable(true),
+        spamFlavors: ko.observableArray(["cherry","almond"]),
+        //radio
+        wantsSpam: ko.observable(true),
+        spamFlavor: ko.observable("almond"),
+        //checkedValue
+        items: ko.observableArray([
+            { itemName: '..1' },
+            { itemName: '..2' }
+        ]),
+        chosenItems: ko.observableArray(),
+        //привязка options
+        //availableCountries: ko.observableArray(['Франция', 'Германия', 'Испания']),
+        //Выпадающий список, представляющий произвольные объекты JavaScript, а не только строки
+        availableCountries : ko.observableArray([
+            new Country("UK", 65000000),
+            new Country("USA", 320000000),
+            new Country("Sweden", 29000000)
+        ]),
+        selectedCountry : ko.observable(),
+        // Постобработка сгенерированных параметров
+        myItems: [
+            { name: '.1', id: 1, disable: ko.observable(false)},
+            { name: '.3', id: 3, disable: ko.observable(true)},
+            { name: '.4', id: 4, disable: ko.observable(false)}
+        ],
+        setOptionDisable: function(option, item) {
+            ko.applyBindingsToNode(option, {disable: item.disable}, item);
+        },
+        //uniqueName
+        someModelProperty: ko.observable("unique")
+
+    };
+    viewModel.spamFlavors.push("msg");
+    viewModel.availableCountries.push('Китай'); 
+    ko.applyBindings(viewModel);
+
+    </script>
+</body>
+</html>
