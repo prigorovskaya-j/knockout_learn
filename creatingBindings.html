@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <script type='text/javascript' src='jquery-2.1.1.js'></script>
+   
+    <title>Создание пользовательских привязок</title>
+</head>
+<body>
+    <table data-bind="foreach: Accounts">
+        <tr data-bind="displayStatus: Status, colors:['red','blue']">
+            <td data-bind="text: Id"></td>
+            <td data-bind="text: Name"></td>
+            <td data-bind="text: Balance"></td>
+            <td><select data-bind="options: AllStatus, value: Status"></select></td>
+        </tr>
+    </table>
+    <script>
+    function Account(id, name, balance, status){
+        this.Id = id;
+        this.Name = name;
+        this.Balance = ko.observable(balance);
+        this.Status = ko.observable(status);
+    };
+    var myAccountViewModel = function(){
+        this.AllStatus = ['Active', 'Inactive', 'Closed']
+        this.Accounts = ko.observable([
+            new Account(1, "A1", 100,'Active'),
+            new Account(2, "A2", 200, 'Inactive'),
+            new Account(3, "A3", 300, 'Closed'),
+            new Account(4, "A4", 400, 'Active'),
+            new Account(5, "A5", 110,'Active'),
+            new Account(6, "A6", 202, 'Inactive'),
+            new Account(7, "A7", 300, 'Closed'),
+            new Account(8, "A8", 400, 'Active'),
+        ])
+    };
+    ko.bindingHandlers.displayStatus = {
+        init: function(element, valueAccessor, allBindings, viewModel, bindingContext){
+        },
+        update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
+            var value = ko.unwrap(valueAccessor());
+            var activeColor = 'green';
+            var inactiveColor = 'red';
+            if(allBindings.has("colors")){
+                var colors = allBindings.get("colors");
+                activeColor = colors[0];
+                inactiveColor = colors[1];
+            }
+            switch(value.toLowerCase()){
+                case "inactive": 
+                    element.style['color'] = inactiveColor;
+                    break;
+                case "active":
+                    element.style['color'] = activeColor;
+                    break;
+                case "closed":
+                    element.style['text-decoration'] = 'line-through';
+                    break;
+                default:
+                    throw "Invalide Status";
+                    break;
+            }
+        }
+    };
+    ko.applyBindings(myAccountViewModel);
+    </script>    
+</body>
+</html>
