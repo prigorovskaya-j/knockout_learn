@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <script type='text/javascript' src='jquery-2.1.1.js'></script>
+   
+    <title>Пользовательская логика удаления</title>
+</head>
+<body>
+    <h4>People</h4>
+    <ul data-bind="foreach: people">
+        <li>
+            Имя в позиции<span data-bind="text: $index"> </span>:
+            <span data-bind="text: name"> </span>
+            <a href="#" data-bind="click: $parent.removePerson">Удалить</a>
+        </li>
+    </ul>
+    <button data-bind="click: addPerson">Добавить</button>
+    
+    <script>
+    function AppViewModel() {
+        var self = this;
+    
+        self.people = ko.observableArray([
+            { name: 'ААА' },
+            { name: 'БББ' },
+            { name: 'ВВВ' }
+        ]);
+        self.addPerson = function() {
+            self.people.push({ name: "+ в " + new Date() });
+        };    
+        self.removePerson = function() {
+            var peopleDel = ko.removeNode(this);
+            //self.people.remove(this);
+        };
+    }
+    ko.bindingHandlers.myWidget = {
+        init: function(element, valueAccessor) {
+            var options = ko.unwrap(valueAccessor()),
+                $el = $(element);    
+            $el.myWidget(options);
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function() {
+                // Вызывается при удалении ноукаутом или при вызове ko.removeNode(element)
+                console.log("удалить");
+                $el.myWidget("удалить");
+            });
+        }
+    };
+    ko.applyBindings(new AppViewModel());
+    </script>    
+</body>
+</html>
