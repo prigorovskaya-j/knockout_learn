@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type='text/javascript' src='knockout-3.5.1.js'></script>
+    <title>Типы управления</title>
+</head>
+<body>
+    <div class="readout">
+        <h3>Что в модели</h3>
+        <table>
+            <tr>
+                <td class="label">Текст:</td>
+                <td data-bind="text: stringValue"></td>
+            </tr>
+            <tr>
+                <td class="label">Пароль:</td>
+                <td data-bind="text: passwordValue"></td>
+            </tr>
+            <tr>
+                <td class="label">Лог.значение:</td>
+                <td data-bind='text: booleanValue() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">Выбрать:</td>
+                <td data-bind="text: selectedOptionValue"></td>
+            </tr>
+            <tr>
+                <td class="label">Выбрать из неескольких:</td>
+                <td data-bind="text: multipleSelectedOptionValues"></td>
+            </tr>
+            <tr>
+                <td class="label">Переключатель:</td>
+                <td data-bind="text: radioSelectedOptionValue"></td>
+            </tr>
+        </table>
+    </div>
+     
+    <h3>HTML контроль</h3>
+    <table>
+        <tr>
+            <td class="label">Текст при изменении:</td>
+            <td><input data-bind="value: stringValue" /></td>
+        </tr>
+        <tr>
+            <td class="label">Текст при нажатии клавиши:</td>
+            <td><input data-bind='value: stringValue, valueUpdate: "afterkeydown"' /></td>
+        </tr>
+        <tr>
+            <td class="label">Текст многострочный:</td>
+            <td><textarea data-bind="value: stringValue"> </textarea></td>
+        </tr>
+        <tr>
+            <td class="label">Пароль:</td>
+            <td><input type="password" data-bind="value: passwordValue" /></td>
+        </tr>
+        <tr>
+            <td class="label">Чеклист:</td>
+            <td><input type="checkbox" data-bind="checked: booleanValue" /></td>
+        </tr>
+        <tr>
+            <td class="label">Выпадающий список:</td>
+            <td><select data-bind="options: optionValues, value: selectedOptionValue"></select></td>
+        </tr>
+        <tr>
+            <td class="label">Выпадающий мультисписок:</td>
+            <td><select multiple="multiple" data-bind="options: optionValues, selectedOptions: multipleSelectedOptionValues"></select></td>
+        </tr>
+        <tr>
+            <td class="label">Переключатель:</td>
+            <td>
+                <label><input type="radio" value="А" data-bind="checked: radioSelectedOptionValue" />А</label>
+                <label><input type="radio" value="Б" data-bind="checked: radioSelectedOptionValue" />Б</label>
+                <label><input type="radio" value="С" data-bind="checked: radioSelectedOptionValue" />В</label>
+            </td>
+        </tr>
+    </table>   
+<script>
+    var viewModel = {
+        stringValue : ko.observable("Привет"),
+        passwordValue : ko.observable("парольпароль"),
+        booleanValue : ko.observable(true),
+        optionValues : ["А", "Б", "С"],
+        selectedOptionValue : ko.observable("С"),
+        multipleSelectedOptionValues : ko.observable(["А"]),
+        radioSelectedOptionValue : ko.observable("Б")
+    };
+    ko.applyBindings(viewModel);
+   
+</script>
+<div>
+</div>
+</body>
+</html>
